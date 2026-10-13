@@ -29,23 +29,31 @@ using System.Collections.Generic;
             }
             return false;
         }
-        public bool ValidAnagram(string s, string t)
-        {
-            if (s.Length != t.Length) return false;
-
-            int[] count = new int[26];
-            for (int i = 0; i < s.Length; i++)
-            {
-                count[s[i] - 'a']++;
-                count[t[i] - 'a']--;
-            }
-
-            for (int i = 0; i < 26; i++)
-            {
-                if (count[i] != 0) 
-                return false;
-            }
-
+        public bool ValidAnagram(string s, string t){ 
+            if (s.Length != t.Length) { 
+                return false; 
+            } 
+            
+            Dictionary<char, int> storage = new Dictionary<char, int>(); 
+            
+            for (int i = 0; i < s.Length; i++) { 
+                if (!storage.ContainsKey(s[i])) { 
+                    storage[s[i]] = 0; 
+                } 
+                storage[s[i]]++; 
+            } 
+            
+            for (int i = 0; i < t.Length; i++) { 
+                if (!storage.ContainsKey(t[i])) { 
+                    return false; 
+                } 
+                storage[t[i]]--; 
+            } 
+            foreach (var count in storage.Values) { 
+                if (count != 0) { 
+                    return false; 
+                } 
+            } 
             return true;
         }
         public int BinarySearch(int[] nums, int target)
@@ -60,8 +68,8 @@ using System.Collections.Generic;
 
             return -1;
         }
-        public void ReverseString(char[] s)
-        {
+        public void ReverseString(char[] s){
+            // reverses the string
             int left = 0;
             int right = s.Length -1;
 
@@ -108,8 +116,8 @@ using System.Collections.Generic;
         }
         return k;
     }
-        public int RemoveDuplicates(int[] nums)
-    {
+        public int RemoveDuplicates(int[] nums){
+            // removes any duplicates from a sorted array
         if (nums.Length == 0)
         {
             return 0;
@@ -223,6 +231,7 @@ using System.Collections.Generic;
     return pairings;
 }
         public int[] PlusOne(int[] digits) { 
+            // adds one number to the end of the array list
             for (int i = digits.Length - 1; i >= 0; i--) { 
                 if (digits[i] < 9) { 
                     digits[i]++; 
