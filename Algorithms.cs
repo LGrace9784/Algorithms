@@ -128,6 +128,100 @@ using System.Collections.Generic;
 
         return k;
     }
+        public void MergeSort(int[] nums)
+            {
+                if (nums.Length <= 1)
+                {
+                    return;
+                }
+
+                int mid = nums.Length / 2;
+
+                int[] left = nums[..mid];
+                int[] right = nums[mid..];
+
+                MergeSort(left);
+                MergeSort(right);
+
+                Merge(nums, left, right);
+            }
+            public void Merge(int[] nums, int[] left, int[] right)
+            {
+                int i = 0;
+                int j = 0;
+                int k = 0;
+
+                while (i < left.Length && j < right.Length)
+                {
+                    if (left[i] <= right[j])
+                    {
+                        nums[k] = left[i];
+                        i++;
+                    }
+                    else
+                    {
+                        nums[k] = right[j];
+                        j++;
+                    }
+
+                    k++;
+                }
+
+                while (i < left.Length)
+                {
+                    nums[k] = left[i];
+                    i++;
+                    k++;
+                }
+
+                while (j < right.Length)
+                {
+                    nums[k] = right[j];
+                    j++;
+                    k++;
+                }
+            }
+        public static double CalculateExpectedScore(double playerRating, double opponentRating)
+    {
+        return 1.0 / (1.0 + Math.Pow(10, (opponentRating - playerRating) / 400.0));
+    }
+            public static void UpdateRatings(
+                ChessPlayer playerA,
+                ChessPlayer playerB,
+                double scoreA,
+                                int kFactor = 32)
+    {
+        double expectedA = CalculateExpectedScore(playerA.Rating, playerB.Rating);
+        double expectedB = CalculateExpectedScore(playerB.Rating, playerA.Rating);
+
+        double scoreB = 1.0 - scoreA;
+
+        playerA.Rating += kFactor * (scoreA - expectedA);
+        playerB.Rating += kFactor * (scoreB - expectedB);
+    }
+            public static List<ChessPlayer> SortPlayers(List<ChessPlayer> players)
+{
+    return players
+        .OrderByDescending(player => player.Rating)
+        .ToList();
+}
+            public static List<(ChessPlayer, ChessPlayer)> GeneratePairings(
+                        List<ChessPlayer> players)
+{
+    var sortedPlayers = players
+        .OrderByDescending(player => player.Score)
+        .ThenByDescending(player => player.Rating)
+        .ToList();
+
+    var pairings = new List<(ChessPlayer, ChessPlayer)>();
+
+    for (int i = 0; i + 1 < sortedPlayers.Count; i += 2)
+    {
+        pairings.Add((sortedPlayers[i], sortedPlayers[i + 1]));
+    }
+
+    return pairings;
+}
 
 }
 
