@@ -244,6 +244,24 @@ using System.Collections.Generic;
         
         return result;
     }
+        public int MissingNumber(int[] nums) {
+        Dictionary<int,int> memory = new Dictionary<int,int>();
 
+        for(int i = 0; i < nums.Length + 1; i++){
+            memory[i] = 0;
+        }
+
+        for(int i = 0; i < nums.Length; i++){
+            memory[nums[i]] = 1;
+        }
+
+        foreach(var number in memory){
+            if(number.Value == 0){
+                return number.Key;
+            }
+        }
+    return 0;
+    }
+    
 }
 
